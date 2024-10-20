@@ -22,6 +22,7 @@ class TagSet
      * @var array
      */
     protected $tag;
+    protected $keys;
 
     /**
      * 缓存句柄
@@ -69,6 +70,7 @@ class TagSet
         $name = $this->handler->getCacheKey($name);
 
         foreach ($this->tag as $tag) {
+            $this->keys[$tag] = $name;
             $this->handler->push($tag, $name);
         }
     }
@@ -119,7 +121,7 @@ class TagSet
     {
         // 指定标签清除
         foreach ($this->tag as $tag) {
-            $names = $this->handler->get($tag, []);
+            $names = $this->keys[$tag] ?? $this->handler->get($tag, []);
 
             $this->handler->clearTag($names);
             $this->handler->delete($tag);
